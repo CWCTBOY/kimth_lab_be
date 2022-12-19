@@ -1,4 +1,4 @@
-package com.conict.kimth_lab.entity.project;
+package com.conict.kimth_lab.entity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,38 +14,36 @@ import java.util.Date;
 @Entity(name = "project")
 public class Project {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
-
+  // this is FK get from the member entity. (N:1)
+//  @Column(name = "user_id")
+//  private Long userId;
+  // this is FK get from the member entity. (N:1)
+//  @Column(name = "company")
+//  private String company;
   @Column(name = "process_rate")
   private int processRate;
-
   @Column(name = "start_date")
   private Date startDate;
-
   @Column(name = "end_date")
   private Date endDate;
-
   @Column(name = "construction_class")
   private String constructionClass;
-
   @Column(name = "detail_construction_class")
   private String detailConstructionClass;
-
   @Column(name = "manager_name")
   private String managerName;
-
   @Column(name = "manager_email")
   private String managerEmail;
-
   @Column(name = "floor_plan")
   private String floorPlan;
-
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
 
   @Builder
-  public Project(Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
+  public Project(int processRate, Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
+    this.processRate = processRate;
     this.startDate = startDate;
     this.endDate = endDate;
     this.constructionClass = constructionClass;
