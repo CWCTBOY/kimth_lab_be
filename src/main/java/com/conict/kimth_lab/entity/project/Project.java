@@ -17,6 +17,9 @@ public class Project {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "process_rate")
+  private int processRate;
+
   @Column(name = "start_date")
   private Date startDate;
 
