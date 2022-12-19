@@ -2,15 +2,15 @@ package com.conict.kimth_lab.entity.member;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Builder
+
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity(name = "member")
 public class Member {
   @Id
@@ -31,4 +31,13 @@ public class Member {
 
   @Column(name = "user_class")
   private String userClassification;
+
+  @Builder
+  public Member(String name, String email, String company, String companyAddress, String userClassification) {
+    this.name = name;
+    this.email = email;
+    this.company = company;
+    this.companyAddress = companyAddress;
+    this.userClassification = userClassification;
+  }
 }

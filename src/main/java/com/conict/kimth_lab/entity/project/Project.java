@@ -2,16 +2,15 @@ package com.conict.kimth_lab.entity.project;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Builder
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity(name = "project")
 public class Project {
   @Id
@@ -41,4 +40,16 @@ public class Project {
 
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
+
+  @Builder
+  public Project(Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.constructionClass = constructionClass;
+    this.detailConstructionClass = detailConstructionClass;
+    this.managerName = managerName;
+    this.managerEmail = managerEmail;
+    this.floorPlan = floorPlan;
+    this.thumbnailUrl = thumbnailUrl;
+  }
 }
