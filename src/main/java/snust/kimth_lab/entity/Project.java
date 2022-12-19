@@ -1,4 +1,4 @@
-package com.conict.kimth_lab.entity;
+package snust.kimth_lab.entity;
 
 import lombok.Builder;
 import lombok.Getter;
