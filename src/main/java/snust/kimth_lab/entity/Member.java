@@ -1,6 +1,7 @@
 package snust.kimth_lab.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +18,22 @@ public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(name = "user_name")
+  @NotNull
+  @Column(name = "name")
   private String name;
-  @Column(name = "user_email", unique = true)
+  @NotNull
+  @Column(name = "email", unique = true)
   private String email;
-  @Column(name = "user_class")
-  private String userClassification;
+  @NotNull
+  @Column(name = "number", unique = true)
+  private String number;
+  @NotNull
+  @Column(name = "classification")
+  private String classification;
+  @NotNull
   @Column(name = "company")
   private String company;
+  @NotNull
   @Column(name = "company_address")
   private String companyAddress;
 
@@ -33,11 +42,13 @@ public class Member {
   private List<Project> myProject;
 
   @Builder
-  public Member(String name, String email, String company, String companyAddress, String userClassification) {
+
+  public Member(String name, String email, String number, String classification, String company, String companyAddress) {
     this.name = name;
     this.email = email;
+    this.number = number;
+    this.classification = classification;
     this.company = company;
     this.companyAddress = companyAddress;
-    this.userClassification = userClassification;
   }
 }
