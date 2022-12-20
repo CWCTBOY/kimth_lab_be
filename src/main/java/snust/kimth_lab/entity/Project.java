@@ -16,12 +16,16 @@ public class Project {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
-  // this is FK get from the member entity. (N:1)
-//  @Column(name = "user_id")
-//  private Long userId;
-  // this is FK get from the member entity. (N:1)
-//  @Column(name = "company")
-//  private String company;
+
+  @ManyToOne
+  @JoinColumn(name = "id")
+  @Column(name = "user_id")
+  private Long userId;
+  
+  @ManyToOne
+  @JoinColumn(name = "company")
+  @Column(name = "company")
+  private String company;
   @Column(name = "process_rate")
   private int processRate;
   @Column(name = "start_date")
