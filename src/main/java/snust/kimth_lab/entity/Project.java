@@ -17,16 +17,12 @@ public class Project {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "id")
-  @Column(name = "user_id")
+  @JoinColumn(name = "user_id")
   private Long userId;
-  
-  @ManyToOne
-  @JoinColumn(name = "company")
-  @Column(name = "company")
+
+  @JoinColumn(referencedColumnName = "company")
   private String company;
-  @Column(name = "process_rate")
+  @Column(name = "process_rate", columnDefinition = "INTEGER default '0'")
   private int processRate;
   @Column(name = "start_date")
   private Date startDate;
