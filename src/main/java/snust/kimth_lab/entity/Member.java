@@ -1,6 +1,5 @@
 package snust.kimth_lab.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -37,9 +35,10 @@ public class Member {
   @Column(name = "company_address")
   private String companyAddress;
 
-  @JsonIgnore
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "userId", cascade = CascadeType.ALL)
-  private List<Project> myProject;
+  // i want to select one of fk(user_id) but can't do this becuz the fk is composite.
+//  @JsonIgnore
+//  @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+//  private List<Project> myProject;
 
   @Builder
   public Member(String name, String email, String number, String classification, String company, String companyAddress) {
