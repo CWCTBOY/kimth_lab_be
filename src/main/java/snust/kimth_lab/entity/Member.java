@@ -42,7 +42,6 @@ public class Member {
   private List<Project> myProject;
 
   @Builder
-
   public Member(String name, String email, String number, String classification, String company, String companyAddress) {
     this.name = name;
     this.email = email;
