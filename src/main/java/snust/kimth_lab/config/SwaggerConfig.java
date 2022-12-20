@@ -1,4 +1,4 @@
-package com.conict.kimth_lab.config;
+package snust.kimth_lab.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ public class SwaggerConfig {
     Docket docket = new Docket(DocumentationType.OAS_30)
       .useDefaultResponseMessages(false)
       .select()
-      .apis(RequestHandlerSelectors.basePackage("com.conict.kimth_lab.controller"))
+      .apis(RequestHandlerSelectors.basePackage("snust.kimth_lab.controller"))
       .paths(PathSelectors.any())
       .build()
       .apiInfo(apiInfo());

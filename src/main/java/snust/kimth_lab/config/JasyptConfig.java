@@ -1,4 +1,4 @@
-package com.conict.kimth_lab.config;
+package snust.kimth_lab.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
