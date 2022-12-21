@@ -16,12 +16,12 @@ public class Project {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
-
-  @JoinColumn(name = "user_id")
-  private Long userId;
-
-  @JoinColumn(referencedColumnName = "company")
-  private String company;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumns({
+    @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    @JoinColumn(name = "company", referencedColumnName = "company")
+  })
+  private Member member;
   @Column(name = "process_rate", columnDefinition = "INTEGER default '0'")
   private int processRate;
   @Column(name = "start_date")
@@ -42,7 +42,8 @@ public class Project {
   private String thumbnailUrl;
 
   @Builder
-  public Project(int processRate, Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
+  public Project(Member member, int processRate, Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
+    this.member = member;
     this.processRate = processRate;
     this.startDate = startDate;
     this.endDate = endDate;

@@ -5,27 +5,31 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
-@Setter
+@ToString
 @NoArgsConstructor
 @Entity(name = "member")
-public class Member {
+public class Member implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @NotNull
+  @Column(name = "email")
+  private String email;
+  @NotNull
+  @Column(name = "password")
+  private String password;
+  @NotNull
   @Column(name = "name")
   private String name;
   @NotNull
-  @Column(name = "email", unique = true)
-  private String email;
-  @NotNull
-  @Column(name = "number", unique = true)
+  @Column(name = "number")
   private String number;
   @NotNull
   @Column(name = "classification")
@@ -33,21 +37,21 @@ public class Member {
   @NotNull
   @Column(name = "company")
   private String company;
-  @NotNull
-  @Column(name = "company_address")
-  private String companyAddress;
+//  @NotNull
+//  @Column(name = "company_address")
+//  private String companyAddress;
 
   @JsonIgnore
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "userId", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
   private List<Project> myProject;
 
   @Builder
-  public Member(String name, String email, String number, String classification, String company, String companyAddress) {
-    this.name = name;
+  public Member(String email, String password, String name, String number, String classification, String company) {
     this.email = email;
+    this.password = password;
+    this.name = name;
     this.number = number;
     this.classification = classification;
     this.company = company;
-    this.companyAddress = companyAddress;
   }
 }

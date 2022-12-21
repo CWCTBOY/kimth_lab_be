@@ -1,4 +1,4 @@
-package snust.kimth_lab.dto.member;
+package snust.kimth_lab.dto.request.member;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
