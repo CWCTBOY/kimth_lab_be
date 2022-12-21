@@ -5,16 +5,17 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
-@Setter
+@ToString
 @NoArgsConstructor
 @Entity(name = "member")
-public class Member {
+public class Member implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -40,7 +41,6 @@ public class Member {
 //  @Column(name = "company_address")
 //  private String companyAddress;
 
-  //   i want to select one of fk(user_id) but can't do this becuz the fk is composite.
   @JsonIgnore
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
   private List<Project> myProject;
