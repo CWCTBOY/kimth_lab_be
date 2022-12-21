@@ -4,16 +4,13 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity(name = "member")
-public class Member implements Serializable {
+public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

@@ -34,7 +34,7 @@ public class Project {
   private String managerName;
   @Column(name = "manager_email")
   private String managerEmail;
-  @Column(name = "floor_plan")
+  @Column(name = "floor_plan  ")
   private String floorPlan;
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
