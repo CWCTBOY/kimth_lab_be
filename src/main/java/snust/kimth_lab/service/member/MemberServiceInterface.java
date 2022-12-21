@@ -1,9 +1,12 @@
 package snust.kimth_lab.service.member;
 
+import snust.kimth_lab.dto.request.member.SignupReqDto;
 import snust.kimth_lab.entity.Member;
 
-public interface MemberServiceInterface {
-  Long join(Member member);
+import java.util.Optional;
 
-  boolean isEmailDuplicated(Member member);
+public interface MemberServiceInterface {
+  Long join(SignupReqDto signupReqDto);
+
+  Optional<Member> isEmailDuplicated(SignupReqDto signupReqDto);
 }
