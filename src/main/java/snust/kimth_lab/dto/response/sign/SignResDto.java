@@ -4,12 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class SignResDto {
+public class SignUpResDto {
   private final String message;
   private final Long id;
 
   @Builder
-  public SignResDto(String message, Long id) {
+  public SignUpResDto(String message, Long id) {
     this.message = message;
     this.id = id;
   }

@@ -1,35 +1,39 @@
 package snust.kimth_lab.util.session;
 
 import lombok.NoArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import snust.kimth_lab.entity.Member;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @NoArgsConstructor
 @Component
 public class SessionManager implements SessionManagerInterface {
+
   @Override
-  public void set(HttpServletRequest request, Member member) {
-    HttpSession session = request.getSession(false);
-    System.out.println("session is not present!");
-    session.setAttribute("session_id", member);
-    System.out.println(session.getAttribute("session_id").toString());
-
-//    System.out.println("isSessionIdPresent? : " + isSessionPresent(request));
-//    String randomSessionId = UUID.randomUUID().toString();
-//    HttpSession session = request.getSession(false);
-//    session.setAttribute("session_id", randomSessionId);
-//    System.out.println("session.getId() = " + session.getAttribute("session_id"));
-//    System.out.println(session.getAttribute("session_id").equals(randomSessionId));
-
+  public ResponseCookie createCookie(HttpServletRequest request, Member member) {
+    String mySessionId = create(request, member);
+    System.out.println("mySessionId = " + mySessionId);
+    return ResponseCookie.from("JSESSIONID", mySessionId)
+      .httpOnly(true)
+      .secure(true)
+      .path("/")
+      .domain("localhost")
+      .maxAge(60)
+      .build();
   }
 
-  public boolean isSessionPresent(HttpServletRequest request) {
-    Optional<HttpSession> session = Optional.ofNullable(request.getSession());
-    return session.isPresent();
+  public String create(HttpServletRequest request, Member member) {
+    HttpSession session = request.getSession();
+    String sessionId = session.getId();
+    session.setAttribute(sessionId, member.toString());
+    return sessionId;
   }
 
+  @Override
+  public Member parse(HttpServletRequest request) {
+    return null;
+  }
 }
