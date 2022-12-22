@@ -48,7 +48,6 @@ public class SignService implements SignServiceInterface {
     }
   }
 
-
   @Override
   public Optional<Member> isEmailDuplicated(SignUpReqDto signupReqDto) {
     return memberRepository.findByEmail(signupReqDto.getEmail());
