@@ -15,13 +15,13 @@ public class SessionManager implements SessionManagerInterface {
   @Override
   public ResponseCookie createCookie(HttpServletRequest request, Member member) {
     String mySessionId = create(request, member);
-    System.out.println("mySessionId = " + mySessionId);
     return ResponseCookie.from("JSESSIONID", mySessionId)
       .httpOnly(true)
       .secure(true)
       .path("/")
+      .sameSite("none")
       .domain("localhost")
-      .maxAge(60)
+      .maxAge(30)
       .build();
   }
 

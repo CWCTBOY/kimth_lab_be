@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
+
 @RequestMapping("/auth")
 @RestController
 public class SignController {
@@ -58,6 +59,7 @@ public class SignController {
     Optional<Member> member = signService.signIn(signInReqDto);
     if (member.isPresent()) {
       ResponseCookie responseCookie = sessionManager.createCookie(request, member.get());
+      System.out.println(responseCookie.toString());
       SignResDto body = SignResDto.builder()
         .id(member.get().getId())
         .message("login success.")
