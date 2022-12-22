@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 @NoArgsConstructor
 @Component
 public class SessionManager implements SessionManagerInterface {
-
   @Override
   public ResponseCookie createCookie(HttpServletRequest request, Member member) {
     String mySessionId = create(request, member);
@@ -21,19 +20,14 @@ public class SessionManager implements SessionManagerInterface {
       .path("/")
       .sameSite("none")
       .domain("localhost")
-      .maxAge(30)
+      .maxAge(5)
       .build();
   }
 
   public String create(HttpServletRequest request, Member member) {
     HttpSession session = request.getSession();
     String sessionId = session.getId();
-    session.setAttribute(sessionId, member.toString());
+    session.setAttribute(sessionId, member.getId());
     return sessionId;
-  }
-
-  @Override
-  public Member parse(HttpServletRequest request) {
-    return null;
   }
 }

@@ -7,6 +7,4 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface SessionManagerInterface {
   ResponseCookie createCookie(HttpServletRequest request, Member member);
-
-  Member parse(HttpServletRequest request);
 }

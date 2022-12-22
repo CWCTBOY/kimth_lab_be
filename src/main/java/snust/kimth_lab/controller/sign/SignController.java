@@ -59,7 +59,6 @@ public class SignController {
     Optional<Member> member = signService.signIn(signInReqDto);
     if (member.isPresent()) {
       ResponseCookie responseCookie = sessionManager.createCookie(request, member.get());
-      System.out.println(responseCookie.toString());
       SignResDto body = SignResDto.builder()
         .id(member.get().getId())
         .message("login success.")
