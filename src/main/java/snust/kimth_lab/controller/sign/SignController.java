@@ -1,9 +1,7 @@
 package snust.kimth_lab.controller.sign;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +14,7 @@ import snust.kimth_lab.service.sign.SignServiceInterface;
 import snust.kimth_lab.util.session.SessionManagerInterface;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RequestMapping("/auth")
@@ -55,21 +54,22 @@ public class SignController {
   }
 
   @PostMapping("/sign-in")
-  public ResponseEntity<SignResDto> signIn(@RequestBody SignInReqDto signInReqDto, HttpServletRequest request) {
+  public ResponseEntity<SignResDto> signIn(@RequestBody SignInReqDto signInReqDto, HttpServletRequest request, HttpServletResponse response) {
     Optional<Member> member = signService.signIn(signInReqDto);
     if (member.isPresent()) {
-      sessionManager.set(request, member.get());
+      ResponseCookie responseCookie = sessionManager.createCookie(request, member.get());
       SignResDto body = SignResDto.builder()
         .id(member.get().getId())
-        .message("sign in successfully.")
+        .message("login success.")
         .build();
       return ResponseEntity
         .status(200)
+        .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
         .body(body);
     } else {
       SignResDto body = SignResDto.builder()
         .id(null)
-        .message("email or password is invalid.")
+        .message("invalid email or password.")
         .build();
       return ResponseEntity
         .status(401)
