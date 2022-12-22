@@ -4,10 +4,12 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Entity(name = "member")
 public class Member {
