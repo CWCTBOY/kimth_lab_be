@@ -43,6 +43,7 @@ public class SessionController implements Serializable {
         .classification(member.getClassification())
         .company(member.getCompany())
         .companyAddress(member.getCompanyAddress())
+        .companyProjects(member.getCompanyProjects())
         .build());
   }
 }

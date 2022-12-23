@@ -7,14 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @ToString
 @NoArgsConstructor
 @Entity(name = "member")
 public class Member {
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+  List<Project> companyProjects;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
   @NotNull
   @Column(name = "email")

@@ -14,12 +14,13 @@ import java.util.Date;
 @Entity(name = "project")
 public class Project {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @ManyToOne
+  @JoinColumn(name = "company", referencedColumnName = "company")
+  private Member member;
   @Column(name = "user_id")
-  private Long user_id;
-  @Column(name = "company")
-  private String company;
+  private String userId;
   @Column(name = "process_rate", columnDefinition = "INTEGER default '0'")
   private int processRate;
   @Column(name = "start_date")
@@ -34,15 +35,16 @@ public class Project {
   private String managerName;
   @Column(name = "manager_email")
   private String managerEmail;
-  @Column(name = "floor_plan  ")
+  @Column(name = "floor_plan")
   private String floorPlan;
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
 
   @Builder
-  public Project(Long user_id, String company, int processRate, Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
-    this.user_id = user_id;
-    this.company = company;
+  public Project(Long id, Member member, String userId, int processRate, Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
+    this.id = id;
+    this.member = member;
+    this.userId = userId;
     this.processRate = processRate;
     this.startDate = startDate;
     this.endDate = endDate;
