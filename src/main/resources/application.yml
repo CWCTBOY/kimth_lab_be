@@ -1,4 +1,5 @@
 server:
+  port: 8080
   servlet:
     encoding:
       charset: utf-8
@@ -23,7 +24,7 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format-sql: true
