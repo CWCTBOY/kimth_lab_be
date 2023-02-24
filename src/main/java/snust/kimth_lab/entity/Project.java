@@ -1,58 +1,72 @@
 package snust.kimth_lab.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity(name = "project")
 public class Project {
+  @JsonIgnore
+  @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+  List<Participants> participants;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @ManyToOne
-  @JoinColumn(name = "company", referencedColumnName = "company")
-  private Member member;
-  @Column(name = "user_id")
-  private String userId;
+  private String name;
+  @NotNull
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "company_id")
+  private Company company;
+  @NotNull
   @Column(name = "process_rate", columnDefinition = "INTEGER default '0'")
   private int processRate;
+  @NotNull
   @Column(name = "start_date")
-  private Date startDate;
+  private String startDate;
+  @NotNull
   @Column(name = "end_date")
-  private Date endDate;
+  private String endDate;
+  @NotNull
   @Column(name = "construction_class")
   private String constructionClass;
+  @NotNull
   @Column(name = "detail_construction_class")
   private String detailConstructionClass;
-  @Column(name = "manager_name")
-  private String managerName;
-  @Column(name = "manager_email")
-  private String managerEmail;
-  @Column(name = "floor_plan")
-  private String floorPlan;
+  @Column(name = "floor_plan_url")
+  private String floorPlanUrl;
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
 
+
   @Builder
-  public Project(Long id, Member member, String userId, int processRate, Date startDate, Date endDate, String constructionClass, String detailConstructionClass, String managerName, String managerEmail, String floorPlan, String thumbnailUrl) {
-    this.id = id;
-    this.member = member;
-    this.userId = userId;
+  public Project(
+    String name,
+    Company company,
+    int processRate,
+    String startDate,
+    String endDate,
+    String constructionClass,
+    String detailConstructionClass,
+    String floorPlanUrl,
+    String thumbnailUrl
+  ) {
+    this.name = name;
+    this.company = company;
     this.processRate = processRate;
     this.startDate = startDate;
     this.endDate = endDate;
     this.constructionClass = constructionClass;
     this.detailConstructionClass = detailConstructionClass;
-    this.managerName = managerName;
-    this.managerEmail = managerEmail;
-    this.floorPlan = floorPlan;
+    this.floorPlanUrl = floorPlanUrl;
     this.thumbnailUrl = thumbnailUrl;
   }
 }

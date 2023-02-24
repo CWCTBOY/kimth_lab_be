@@ -1,25 +1,23 @@
 package snust.kimth_lab.entity;
 
 import com.sun.istack.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Getter
 @ToString
+@Getter
+@Setter
 @NoArgsConstructor
-@Entity(name = "member")
-public class Member {
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
-  List<Project> companyProjects;
+@Entity(name = "crew")
+public class Crew {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   private Long id;
+  @NotNull
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "company_id")
+  private Company company;
   @NotNull
   @Column(name = "email")
   private String email;
@@ -36,20 +34,22 @@ public class Member {
   @Column(name = "classification")
   private String classification;
   @NotNull
-  @Column(name = "company")
-  private String company;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "role")
+  private Role role;
   @NotNull
-  @Column(name = "company_address")
-  private String companyAddress;
+  @Column(name = "is_authorized", columnDefinition = "BOOLEAN DEFAULT true") // 나중에 false로 바꿔야함
+  private boolean isAuthorized;
 
   @Builder
-  public Member(String email, String password, String name, String number, String classification, String company, String companyAddress) {
+  public Crew(Company company, String email, String password, String name, String number, String classification, Role role, boolean isAuthorized) {
+    this.company = company;
     this.email = email;
     this.password = password;
     this.name = name;
     this.number = number;
     this.classification = classification;
-    this.company = company;
-    this.companyAddress = companyAddress;
+    this.role = role;
+    this.isAuthorized = isAuthorized;
   }
 }
