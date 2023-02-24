@@ -15,10 +15,10 @@ spring:
       settings:
         web-allow-others: true
   datasource:
-    url: ENC(JZw+Rob7dBHsn5xEcfI4ztW+v0u5LRn4iYSm99bhww2UDu8nfbz9WQXCidyJuWY2s46N2GfdU8E/dZucZyeVE2Ajtheshw0uxZzDDjCTId+l1gWsO8N8b7Xmcv4h2MTF)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ENC(r2dQ7kwNsuiVR/OM6rMZ3Q==)
-    password: ENC(EhMDMWjKSOgdWlEhfizTknA+Np4h0Ni8)
+    url: ENC(9mgxGOJCV4kIyLMePqHvmG7PwVOhjTtPjVzAiRg8Vi13rxxLjdD0QAi5JE+Qkf3hy7kd6J8YkqswP+2ms6cmWz9HJZ8ue/yWWnTfp6LgwC6JwpMabzjQ3YfMrw7mfeqVaIW8hwBNPI7lIOWkoCSd9277Z0VN4FwTHZpZf1CWuqP/HrAnFQ1/prQSlFZD/14b9Gjb5uKcqSrWZtslflvkaFh+yHBZCjEV)
+    username: ENC(vU3FQJN2eD6HN12LlHnorQ==)
+    password: ENC(91LDIQIgVkgOyBXW5TRNT6v8W/zNmm/U)
 
   jpa:
     database: mysql
