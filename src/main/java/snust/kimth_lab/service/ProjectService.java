@@ -6,7 +6,7 @@ import snust.kimth_lab.dto.request.ProjectReqDto;
 import snust.kimth_lab.dto.response.ParticipantsResDto;
 import snust.kimth_lab.dto.response.ProjectResDto;
 import snust.kimth_lab.entity.Company;
-import snust.kimth_lab.entity.Participants;
+import snust.kimth_lab.entity.Participant;
 import snust.kimth_lab.entity.Project;
 import snust.kimth_lab.entity.ProjectRole;
 import snust.kimth_lab.repository.CompanyRepositoryInterface;
@@ -53,16 +53,15 @@ public class ProjectService implements ProjectServiceInterface {
       .company(company)
       .startDate(projectReqDto.getStartDate())
       .endDate(projectReqDto.getEndDate())
-      .constructionClass(projectReqDto.getConstructionClass())
-      .detailConstructionClass(projectReqDto.getDetailConstructionClass())
+      .ctrClass(projectReqDto.getConstructionClass())
+      .detailCtrClass(projectReqDto.getDetailConstructionClass())
       .floorPlanUrl(floorPlanUrl)
       .thumbnailUrl(thumbnailUrl)
       .build();
-    Participants participants = Participants.builder()
+    Participant participants = Participant.builder()
       .project(projectRepository.save(newProject))
       .crewId(projectReqDto.getManagerId())
       .projectRole(ProjectRole.MANAGER)
-      .isPermitted(true)
       .build();
     return participantsRepository.save(participants).getId();
   }
@@ -77,18 +76,18 @@ public class ProjectService implements ProjectServiceInterface {
       updatedProject.setName(projectReqDto.getName());
       updatedProject.setStartDate(projectReqDto.getStartDate());
       updatedProject.setEndDate(projectReqDto.getEndDate());
-      updatedProject.setConstructionClass(projectReqDto.getConstructionClass());
-      updatedProject.setDetailConstructionClass(projectReqDto.getDetailConstructionClass());
+      updatedProject.setCtrClass(projectReqDto.getConstructionClass());
+      updatedProject.setDetailCtrClass(projectReqDto.getDetailConstructionClass());
       updatedProject.setFloorPlanUrl(projectReqDto.getFloorPlan());
       updatedProject.setThumbnailUrl(projectReqDto.getThumbnail());
       projectRepository.save(updatedProject);
-      List<Participants> participants = updatedProject.getParticipants();
-      Optional<Participants> managerInfo = participants.stream()
+      List<Participant> participants = updatedProject.getParticipants();
+      Optional<Participant> managerInfo = participants.stream()
         .filter(participant -> participant.getProjectRole().equals(ProjectRole.MANAGER))
         .findAny();
       managerInfo.ifPresent(info -> {
         Long managerParticipantsPk = info.getId();
-        Optional<Participants> managerInstance = participantsRepository.findById(managerParticipantsPk);
+        Optional<Participant> managerInstance = participantsRepository.findById(managerParticipantsPk);
         managerInstance.ifPresent(manager -> {
           manager.setCrewId(projectReqDto.getManagerId());
           participantsRepository.save(manager);
@@ -110,11 +109,11 @@ public class ProjectService implements ProjectServiceInterface {
       .processRate(project.get().getProcessRate())
       .startDate(project.get().getStartDate())
       .endDate(project.get().getEndDate())
-      .constructionClass(project.get().getConstructionClass())
-      .detailConstructionClass(project.get().getDetailConstructionClass())
+      .constructionClass(project.get().getCtrClass())
+      .detailConstructionClass(project.get().getDetailCtrClass())
       .floorPlanUrl(project.get().getFloorPlanUrl())
       .thumbnailUrl(project.get().getThumbnailUrl())
-      .participants(participantsService.findByProject(project.get()))
+//      .participants(participantsService.findByProject(project.get()))
       .build());
   }
 
@@ -134,11 +133,11 @@ public class ProjectService implements ProjectServiceInterface {
             .processRate(project.getProcessRate())
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
-            .constructionClass(project.getConstructionClass())
-            .detailConstructionClass(project.getDetailConstructionClass())
+            .constructionClass(project.getCtrClass())
+            .detailConstructionClass(project.getDetailCtrClass())
             .floorPlanUrl(project.getFloorPlanUrl())
             .thumbnailUrl(project.getThumbnailUrl())
-            .participants(participantsService.findByProject(project))
+//            .participants(participantsService.findByProject(project))
             .build()
       ).collect(Collectors.toList());
   }
@@ -153,8 +152,8 @@ public class ProjectService implements ProjectServiceInterface {
     List<Project> projectList = optionalCompany.get().getCompanyProjects();
     List<Project> myProjectList = projectList.stream()
       .filter(project -> {
-          List<Participants> projectParticipants = project.getParticipants();
-          Optional<Participants> me = projectParticipants.stream()
+          List<Participant> projectParticipants = project.getParticipants();
+          Optional<Participant> me = projectParticipants.stream()
             .filter(participants -> participants.getCrewId().equals(userId))
             .findAny();
           return me.isPresent();
@@ -169,11 +168,11 @@ public class ProjectService implements ProjectServiceInterface {
             .processRate(myProject.getProcessRate())
             .startDate(myProject.getStartDate())
             .endDate(myProject.getEndDate())
-            .constructionClass(myProject.getConstructionClass())
-            .detailConstructionClass(myProject.getDetailConstructionClass())
+            .constructionClass(myProject.getCtrClass())
+            .detailConstructionClass(myProject.getDetailCtrClass())
             .floorPlanUrl(myProject.getFloorPlanUrl())
             .thumbnailUrl(myProject.getThumbnailUrl())
-            .participants(participantsService.findByProject(myProject))
+//            .participants(participantsService.findByProject(myProject))
             .build()
       ).collect(Collectors.toList());
   }
@@ -188,8 +187,8 @@ public class ProjectService implements ProjectServiceInterface {
     List<Project> projectList = optionalCompany.get().getCompanyProjects();
     List<Project> myProjectList = projectList.stream()
       .filter(project -> {
-          List<Participants> projectParticipants = project.getParticipants();
-          Optional<Participants> me = projectParticipants.stream()
+          List<Participant> projectParticipants = project.getParticipants();
+          Optional<Participant> me = projectParticipants.stream()
             .filter(participants -> participants.getCrewId().equals(userId))
             .findAny();
           return me.isEmpty();
@@ -204,11 +203,11 @@ public class ProjectService implements ProjectServiceInterface {
             .processRate(myProject.getProcessRate())
             .startDate(myProject.getStartDate())
             .endDate(myProject.getEndDate())
-            .constructionClass(myProject.getConstructionClass())
-            .detailConstructionClass(myProject.getDetailConstructionClass())
+            .constructionClass(myProject.getCtrClass())
+            .detailConstructionClass(myProject.getDetailCtrClass())
             .floorPlanUrl(myProject.getFloorPlanUrl())
             .thumbnailUrl(myProject.getThumbnailUrl())
-            .participants(participantsService.findByProject(myProject))
+//            .participants(participantsService.findByProject(myProject))
             .build()
       ).collect(Collectors.toList());
   }

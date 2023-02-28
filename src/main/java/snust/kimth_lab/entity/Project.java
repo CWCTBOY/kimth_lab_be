@@ -17,7 +17,7 @@ import java.util.List;
 public class Project {
   @JsonIgnore
   @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-  List<Participants> participants;
+  List<Participant> participants;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -36,11 +36,11 @@ public class Project {
   @Column(name = "end_date")
   private String endDate;
   @NotNull
-  @Column(name = "construction_class")
-  private String constructionClass;
+  @Column(name = "ctr_class")
+  private String ctrClass;
   @NotNull
-  @Column(name = "detail_construction_class")
-  private String detailConstructionClass;
+  @Column(name = "detail_ctr_class")
+  private String detailCtrClass;
   @Column(name = "floor_plan_url")
   private String floorPlanUrl;
   @Column(name = "thumbnail_url")
@@ -54,8 +54,8 @@ public class Project {
     int processRate,
     String startDate,
     String endDate,
-    String constructionClass,
-    String detailConstructionClass,
+    String ctrClass,
+    String detailCtrClass,
     String floorPlanUrl,
     String thumbnailUrl
   ) {
@@ -64,8 +64,8 @@ public class Project {
     this.processRate = processRate;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.constructionClass = constructionClass;
-    this.detailConstructionClass = detailConstructionClass;
+    this.ctrClass = ctrClass;
+    this.detailCtrClass = detailCtrClass;
     this.floorPlanUrl = floorPlanUrl;
     this.thumbnailUrl = thumbnailUrl;
   }

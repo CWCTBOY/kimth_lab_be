@@ -44,12 +44,22 @@ public class SignController {
 
   @PostMapping("/sign-up") // 회원가입
   public ResponseEntity<SignResDto> join(@RequestBody SignUpReqDto signupReqDto) {
+    Long crewId = signService.join(signupReqDto);
+    if (crewId == null) {
+      return ResponseEntity
+        .status(HttpStatus.valueOf(201))
+        .body(
+          SignResDto.builder()
+            .memberId(signService.join(signupReqDto))
+            .message("new member created.")
+            .build()
+        );
+    }
     return ResponseEntity
-      .status(HttpStatus.valueOf(201))
+      .status(HttpStatus.valueOf(403))
       .body(
         SignResDto.builder()
-          .memberId(signService.join(signupReqDto))
-          .message("new member created.")
+          .message("failed to join")
           .build()
       );
   }
@@ -66,7 +76,7 @@ public class SignController {
         .body(
           SignResDto.builder()
             .memberId(null)
-            .message("invalid email or password.")
+            .message("member not found")
             .build()
         );
     }

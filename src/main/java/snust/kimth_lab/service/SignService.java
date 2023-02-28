@@ -16,6 +16,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.transaction.Transactional;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,21 +37,22 @@ public class SignService implements SignServiceInterface {
 
   @Override
   public Long join(SignUpReqDto signupReqDto) {
-    Optional<Company> company = getCompany(signupReqDto);
+    Long companyId = signupReqDto.getCompanyId();
+    Optional<Company> company = companyRepository.findById(companyId);
     if (company.isEmpty()) {
       return null;
     }
-    String encryptedPassword = encryptPassword(signupReqDto);
-    Role role = selectRole(signupReqDto);
+    if (!isPossibleToJoin(signupReqDto)) {
+      return null;
+    }
     Crew crew = Crew.builder()
       .company(company.get())
       .email(signupReqDto.getEmail())
-      .password(encryptedPassword)
+      .password(encryptPassword(signupReqDto))
       .name(signupReqDto.getName())
       .number(signupReqDto.getNumber())
       .classification(signupReqDto.getClassification())
-      .role(role)
-      .isAuthorized(role.equals(Role.GUEST))
+      .role(signupReqDto.getClassification().equals("관리자") ? Role.COMPANY_ADMIN : Role.USER)
       .build();
     return crewRepository.save(crew).getId();
   }
@@ -81,21 +83,27 @@ public class SignService implements SignServiceInterface {
     return companyRepository.findById(companyId);
   }
 
-  private Role selectRole(SignUpReqDto signUpReqDto) {
-    Role role;
+  private boolean isPossibleToJoin(SignUpReqDto signUpReqDto) {
     String classification = signUpReqDto.getClassification();
-    switch (classification) {
-      case "관리자":
-        role = Role.COMPANY_ADMIN;
-        break;
-      case "게스트":
-        role = Role.GUEST;
-        break;
-      default:
-        role = Role.MEMBER;
-        break;
+    boolean isAdminPresent = isAdminPresent(signUpReqDto);
+    if (classification.equals("관리자")) {
+      return !isAdminPresent;
+    } else {
+      return isAdminPresent;
     }
-    return role;
+  }
+
+  private boolean isAdminPresent(SignUpReqDto signUpReqDto) {
+    Long companyId = signUpReqDto.getCompanyId();
+    Optional<Company> company = companyRepository.findById(companyId);
+    if (company.isPresent()) {
+      List<Crew> companyCrewList = company.get().getCompanyCrews();
+      Optional<Crew> companyAdmin = companyCrewList.stream().filter(crew ->
+        crew.getRole().equals(Role.COMPANY_ADMIN)
+      ).findAny();
+      return companyAdmin.isPresent();
+    }
+    return false;
   }
 
   private String encryptPassword(SignUpReqDto signUpReqDto) {

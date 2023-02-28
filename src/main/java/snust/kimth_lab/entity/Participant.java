@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "participants")
-public class Participants {
+@Entity(name = "participant")
+public class Participant {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
@@ -25,15 +25,11 @@ public class Participants {
   @Enumerated(EnumType.STRING)
   @Column(name = "project_role")
   private ProjectRole projectRole;
-  @NotNull
-  @Column(name = "is_permitted", columnDefinition = "BOOLEAN DEFAULT false")
-  private boolean isPermitted;
 
   @Builder
-  public Participants(Project project, Long crewId, ProjectRole projectRole, boolean isPermitted) {
+  public Participant(Project project, Long crewId, ProjectRole projectRole) {
     this.project = project;
     this.crewId = crewId;
     this.projectRole = projectRole;
-    this.isPermitted = isPermitted;
   }
 }
