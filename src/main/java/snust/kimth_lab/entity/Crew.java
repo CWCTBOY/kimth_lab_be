@@ -38,7 +38,7 @@ public class Crew {
   @Column(name = "role")
   private Role role;
   @NotNull
-  @Column(name = "is_authorized", columnDefinition = "BOOLEAN DEFAULT true") // 나중에 false로 바꿔야함
+  @Column(name = "is_authorized", columnDefinition = "BOOLEAN DEFAULT false") // 나중에 false로 바꿔야함
   private boolean isAuthorized;
 
   @Builder
