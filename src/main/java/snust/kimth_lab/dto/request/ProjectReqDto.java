@@ -12,8 +12,8 @@ public class ProjectReqDto {
   private Long managerId;
   private String startDate;
   private String endDate;
-  private String constructionClass;
-  private String detailConstructionClass;
+  private String ctrClass;
+  private String detailCtrClass;
   private String floorPlan;
   private String thumbnail;
 
@@ -24,8 +24,8 @@ public class ProjectReqDto {
     Long managerId,
     String startDate,
     String endDate,
-    String constructionClass,
-    String detailConstructionClass,
+    String ctrClass,
+    String detailCtrClass,
     String floorPlan,
     String thumbnail
   ) {
@@ -34,8 +34,8 @@ public class ProjectReqDto {
     this.managerId = managerId;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.constructionClass = constructionClass;
-    this.detailConstructionClass = detailConstructionClass;
+    this.ctrClass = ctrClass;
+    this.detailCtrClass = detailCtrClass;
     this.floorPlan = floorPlan;
     this.thumbnail = thumbnail;
   }

@@ -14,8 +14,8 @@ public class ProjectResDto {
   private int processRate;
   private String startDate;
   private String endDate;
-  private String constructionClass;
-  private String detailConstructionClass;
+  private String ctrClass;
+  private String detailCtrClass;
   private String floorPlanUrl;
   private String thumbnailUrl;
   private boolean isParticipants;
@@ -28,8 +28,8 @@ public class ProjectResDto {
     int processRate,
     String startDate,
     String endDate,
-    String constructionClass,
-    String detailConstructionClass,
+    String ctrClass,
+    String detailCtrClass,
     String floorPlanUrl,
     String thumbnailUrl,
     boolean isParticipants,
@@ -40,8 +40,8 @@ public class ProjectResDto {
     this.processRate = processRate;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.constructionClass = constructionClass;
-    this.detailConstructionClass = detailConstructionClass;
+    this.ctrClass = ctrClass;
+    this.detailCtrClass = detailCtrClass;
     this.floorPlanUrl = floorPlanUrl;
     this.thumbnailUrl = thumbnailUrl;
     this.isParticipants = isParticipants;

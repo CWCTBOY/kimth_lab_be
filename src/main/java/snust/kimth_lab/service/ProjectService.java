@@ -53,8 +53,8 @@ public class ProjectService implements ProjectServiceInterface {
       .company(company)
       .startDate(projectReqDto.getStartDate())
       .endDate(projectReqDto.getEndDate())
-      .ctrClass(projectReqDto.getConstructionClass())
-      .detailCtrClass(projectReqDto.getDetailConstructionClass())
+      .ctrClass(projectReqDto.getCtrClass())
+      .detailCtrClass(projectReqDto.getDetailCtrClass())
       .floorPlanUrl(floorPlanUrl)
       .thumbnailUrl(thumbnailUrl)
       .build();
@@ -76,8 +76,8 @@ public class ProjectService implements ProjectServiceInterface {
       updatedProject.setName(projectReqDto.getName());
       updatedProject.setStartDate(projectReqDto.getStartDate());
       updatedProject.setEndDate(projectReqDto.getEndDate());
-      updatedProject.setCtrClass(projectReqDto.getConstructionClass());
-      updatedProject.setDetailCtrClass(projectReqDto.getDetailConstructionClass());
+      updatedProject.setCtrClass(projectReqDto.getCtrClass());
+      updatedProject.setDetailCtrClass(projectReqDto.getDetailCtrClass());
       updatedProject.setFloorPlanUrl(projectReqDto.getFloorPlan());
       updatedProject.setThumbnailUrl(projectReqDto.getThumbnail());
       projectRepository.save(updatedProject);
@@ -109,8 +109,8 @@ public class ProjectService implements ProjectServiceInterface {
       .processRate(project.get().getProcessRate())
       .startDate(project.get().getStartDate())
       .endDate(project.get().getEndDate())
-      .constructionClass(project.get().getCtrClass())
-      .detailConstructionClass(project.get().getDetailCtrClass())
+      .ctrClass(project.get().getCtrClass())
+      .detailCtrClass(project.get().getDetailCtrClass())
       .floorPlanUrl(project.get().getFloorPlanUrl())
       .thumbnailUrl(project.get().getThumbnailUrl())
 //      .participants(participantsService.findByProject(project.get()))
@@ -133,8 +133,8 @@ public class ProjectService implements ProjectServiceInterface {
             .processRate(project.getProcessRate())
             .startDate(project.getStartDate())
             .endDate(project.getEndDate())
-            .constructionClass(project.getCtrClass())
-            .detailConstructionClass(project.getDetailCtrClass())
+            .ctrClass(project.getCtrClass())
+            .detailCtrClass(project.getDetailCtrClass())
             .floorPlanUrl(project.getFloorPlanUrl())
             .thumbnailUrl(project.getThumbnailUrl())
 //            .participants(participantsService.findByProject(project))
@@ -168,8 +168,8 @@ public class ProjectService implements ProjectServiceInterface {
             .processRate(myProject.getProcessRate())
             .startDate(myProject.getStartDate())
             .endDate(myProject.getEndDate())
-            .constructionClass(myProject.getCtrClass())
-            .detailConstructionClass(myProject.getDetailCtrClass())
+            .ctrClass(myProject.getCtrClass())
+            .detailCtrClass(myProject.getDetailCtrClass())
             .floorPlanUrl(myProject.getFloorPlanUrl())
             .thumbnailUrl(myProject.getThumbnailUrl())
 //            .participants(participantsService.findByProject(myProject))
@@ -203,8 +203,8 @@ public class ProjectService implements ProjectServiceInterface {
             .processRate(myProject.getProcessRate())
             .startDate(myProject.getStartDate())
             .endDate(myProject.getEndDate())
-            .constructionClass(myProject.getCtrClass())
-            .detailConstructionClass(myProject.getDetailCtrClass())
+            .ctrClass(myProject.getCtrClass())
+            .detailCtrClass(myProject.getDetailCtrClass())
             .floorPlanUrl(myProject.getFloorPlanUrl())
             .thumbnailUrl(myProject.getThumbnailUrl())
 //            .participants(participantsService.findByProject(myProject))
