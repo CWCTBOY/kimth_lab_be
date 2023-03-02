@@ -9,17 +9,25 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(9mgxGOJCV4kIyLMePqHvmG7PwVOhjTtPjVzAiRg8Vi13rxxLjdD0QAi5JE+Qkf3hy7kd6J8YkqswP+2ms6cmWz9HJZ8ue/yWWnTfp6LgwC6JwpMabzjQ3YfMrw7mfeqVaIW8hwBNPI7lIOWkoCSd9277Z0VN4FwTHZpZf1CWuqP/HrAnFQ1/prQSlFZD/14b9Gjb5uKcqSrWZtslflvkaFh+yHBZCjEV)
-    username: ENC(vU3FQJN2eD6HN12LlHnorQ==)
-    password: ENC(91LDIQIgVkgOyBXW5TRNT6v8W/zNmm/U)
-
+    url: jdbc:mysql://kimth-lab.c2dfz3ys9r7s.ap-northeast-2.rds.amazonaws.com:30000/smart_building_supervision_platform?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: seoulman2000!
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: cwctboy@naver.com
+    password: seoulman2000!
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+          ssl:
+            trust: smtp.naver.com
+            enable: true
   jpa:
     database: mysql
     show-sql: true
@@ -32,7 +40,3 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-jasypt:
-  encryptor:
-    bean: jasyptStringEncryptor

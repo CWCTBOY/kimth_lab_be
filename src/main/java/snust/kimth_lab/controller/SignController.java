@@ -12,6 +12,7 @@ import snust.kimth_lab.dto.response.CompanyResDto;
 import snust.kimth_lab.dto.response.SignResDto;
 import snust.kimth_lab.entity.Company;
 import snust.kimth_lab.entity.Crew;
+import snust.kimth_lab.service.EmailService;
 import snust.kimth_lab.service.serviceInterface.CompanyServiceInterface;
 import snust.kimth_lab.service.serviceInterface.SessionServiceInterface;
 import snust.kimth_lab.service.serviceInterface.SignServiceInterface;
@@ -26,12 +27,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/auth")
 @RestController
 public class SignController {
+  private final EmailService emailService;
   private final CompanyServiceInterface companyService;
   private final SignServiceInterface signService;
   private final SessionServiceInterface sessionService;
 
   @Autowired
   public SignController(
+    EmailService emailService,
     CompanyServiceInterface companyService,
     SignServiceInterface signService,
     SessionServiceInterface sessionService
@@ -39,6 +42,7 @@ public class SignController {
     this.companyService = companyService;
     this.signService = signService;
     this.sessionService = sessionService;
+    this.emailService = emailService;
   }
 
 
@@ -137,7 +141,7 @@ public class SignController {
       );
   }
 
-  @GetMapping("/email-validation") // 이메일 인증 코드보내기
+  @GetMapping("/email-duplication")
   public ResponseEntity<?> validateEmail(@PathParam("email") String email) {
     System.out.println("email = " + email);
     Optional<Crew> member = signService.isEmailDuplicated(email);
@@ -146,14 +150,26 @@ public class SignController {
         .status(HttpStatus.valueOf(401))
         .body(null);
     }
-    return ResponseEntity
-      .status(HttpStatus.valueOf(200))
-      .body(null);
+    try {
+      String code = emailService.sendSimpleMessage(email);
+      System.out.println("code: " + code);
+      return ResponseEntity
+        .status(HttpStatus.valueOf(200))
+        .body(null);
+    } catch (Exception e) {
+      return ResponseEntity
+        .status(HttpStatus.valueOf(500))
+        .body(null);
+    }
   }
-
-  @GetMapping("/code-validation") // 이메일 인증코드 검증
-  public ResponseEntity<?> validateCode(@PathParam("code") String code) {
-    System.out.println("code = " + code);
-    return null;
-  }
+//
+//  @GetMapping("/validate-code")
+//  public ResponseEntity<?> sendEmailCode(
+//    @PathVariable("email") String email
+//  ) {
+//    System.out.println("email: " + email);
+//    return ResponseEntity
+//      .status(HttpStatus.valueOf(200))
+//      .body(null);
+//  }
 }
