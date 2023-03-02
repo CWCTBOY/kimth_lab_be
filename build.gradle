@@ -29,8 +29,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     // swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    // encript
-    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+    // mail code sender
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.1'
 }
 
 tasks.named('test') {
