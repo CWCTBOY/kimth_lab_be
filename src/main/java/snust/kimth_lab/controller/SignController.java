@@ -10,6 +10,7 @@ import snust.kimth_lab.dto.request.SignInReqDto;
 import snust.kimth_lab.dto.request.SignUpReqDto;
 import snust.kimth_lab.dto.response.CompanyResDto;
 import snust.kimth_lab.dto.response.SignResDto;
+import snust.kimth_lab.dto.response.TextResDto;
 import snust.kimth_lab.entity.Company;
 import snust.kimth_lab.entity.Crew;
 import snust.kimth_lab.service.EmailService;
@@ -39,10 +40,10 @@ public class SignController {
     SignServiceInterface signService,
     SessionServiceInterface sessionService
   ) {
+    this.emailService = emailService;
     this.companyService = companyService;
     this.signService = signService;
     this.sessionService = sessionService;
-    this.emailService = emailService;
   }
 
 
@@ -102,7 +103,7 @@ public class SignController {
   }
 
   @GetMapping("/sign-out") // 로그아웃
-  public ResponseEntity<?> signOut(
+  public ResponseEntity<TextResDto> signOut(
     @CookieValue(
       value = "JSESSIONID"
     ) String jSessionId,
@@ -112,11 +113,15 @@ public class SignController {
     if (isSessionRemoved) {
       return ResponseEntity
         .status(HttpStatus.valueOf(200))
-        .body(null);
+        .body(TextResDto.builder()
+          .message("정상적으로 로그아웃 되었습니다.")
+          .build());
     }
     return ResponseEntity
       .status(HttpStatus.valueOf(401))
-      .body(null);
+      .body(TextResDto.builder()
+        .message("뭔가 이상합니다.")
+        .build());
   }
 
   //회원가입 전 유저 인증로직
@@ -142,34 +147,38 @@ public class SignController {
   }
 
   @GetMapping("/email-duplication")
-  public ResponseEntity<?> validateEmail(@PathParam("email") String email) {
-    System.out.println("email = " + email);
+  public ResponseEntity<TextResDto> validateEmail(@PathParam("email") String email) {
     Optional<Crew> member = signService.isEmailDuplicated(email);
     if (member.isPresent()) {
       return ResponseEntity
         .status(HttpStatus.valueOf(401))
-        .body(null);
+        .body(TextResDto.builder()
+          .message("이미 존재하는 회원입니다.")
+          .build());
     }
     try {
-      String code = emailService.sendSimpleMessage(email);
-      System.out.println("code: " + code);
+      emailService.sendSimpleMessage(email);
       return ResponseEntity
         .status(HttpStatus.valueOf(200))
-        .body(null);
+        .body(TextResDto.builder()
+          .message("코드가 성공적으로 전송되었습니다")
+          .build());
     } catch (Exception e) {
       return ResponseEntity
         .status(HttpStatus.valueOf(500))
-        .body(null);
+        .body(TextResDto.builder()
+          .message("인증코드를 보내는데 실패하였습니다.")
+          .build());
     }
   }
-//
-//  @GetMapping("/validate-code")
-//  public ResponseEntity<?> sendEmailCode(
-//    @PathVariable("email") String email
-//  ) {
-//    System.out.println("email: " + email);
-//    return ResponseEntity
-//      .status(HttpStatus.valueOf(200))
-//      .body(null);
-//  }
+
+  @GetMapping("/validate-code")
+  public ResponseEntity<?> sendEmailCode(
+    @PathVariable("email") String email
+  ) {
+    System.out.println("email: " + email);
+    return ResponseEntity
+      .status(HttpStatus.valueOf(200))
+      .body(null);
+  }
 }

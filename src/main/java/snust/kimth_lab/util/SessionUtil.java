@@ -1,4 +1,4 @@
-package snust.kimth_lab.service;
+package snust.kimth_lab.util;
 
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class SessionService implements SessionServiceInterface {
+public class SessionUtil implements SessionServiceInterface {
   @Override
   public ResponseCookie createCookie(
     Crew crew,
