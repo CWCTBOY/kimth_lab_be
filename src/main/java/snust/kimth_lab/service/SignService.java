@@ -1,6 +1,7 @@
 package snust.kimth_lab.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import snust.kimth_lab.dto.request.SignInReqDto;
 import snust.kimth_lab.dto.request.SignUpReqDto;
@@ -24,6 +25,12 @@ import java.util.Optional;
 public class SignService implements SignServiceInterface {
   private final CrewRepositoryInterface crewRepository;
   private final CompanyRepositoryInterface companyRepository;
+  @Value("${crypto.algorithm}")
+  String alg;
+  @Value("${crypto.aes-iv}")
+  String aesIv;
+  @Value("${crypto.aes-key}")
+  String aesKey;
 
   @Autowired
   public SignService(
@@ -33,7 +40,6 @@ public class SignService implements SignServiceInterface {
     this.crewRepository = crewRepository;
     this.companyRepository = companyRepository;
   }
-
 
   @Override
   public Long join(SignUpReqDto signupReqDto) {
@@ -107,9 +113,6 @@ public class SignService implements SignServiceInterface {
   }
 
   private String encryptPassword(SignUpReqDto signUpReqDto) {
-    String alg = "AES/CBC/PKCS5Padding";
-    String aesIv = "0123456789abcdef";
-    String aesKey = "abcdefghabcdefghabcdefghabcdefgh";
     String encryptedCode = "";
     String target = signUpReqDto.getEmail() + signUpReqDto.getPassword();
     try {
@@ -126,9 +129,6 @@ public class SignService implements SignServiceInterface {
   }
 
   private String decryptPassword(String encryptedCode) {
-    String alg = "AES/CBC/PKCS5Padding";
-    String aesIv = "0123456789abcdef";
-    String aesKey = "abcdefghabcdefghabcdefghabcdefgh";
     String decryptedPassword = "";
     try {
       Cipher cipher = Cipher.getInstance(alg);
