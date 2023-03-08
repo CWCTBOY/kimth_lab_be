@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import snust.kimth_lab.dto.request.EmailValidationReqDto;
 import snust.kimth_lab.dto.request.SignInReqDto;
 import snust.kimth_lab.dto.request.SignUpReqDto;
 import snust.kimth_lab.dto.response.CompanyResDto;
@@ -146,8 +147,10 @@ public class SignController {
       );
   }
 
-  @GetMapping("/email-duplication")
-  public ResponseEntity<TextResDto> validateEmail(@PathParam("email") String email) {
+  @PostMapping("/email-duplication")
+  public ResponseEntity<TextResDto> validateEmail(
+    @RequestBody EmailValidationReqDto emailValidationReqDto) {
+    String email = emailValidationReqDto.getEmail();
     Optional<Crew> member = signService.isEmailDuplicated(email);
     if (member.isPresent()) {
       return ResponseEntity
@@ -172,11 +175,14 @@ public class SignController {
     }
   }
 
-  @GetMapping("/validate-code")
-  public ResponseEntity<?> sendEmailCode(
-    @PathVariable("email") String email
+  @PostMapping("/validate-code")
+  public ResponseEntity<TextResDto> validateCode(
+    @RequestBody EmailValidationReqDto emailValidationReqDto
   ) {
-    System.out.println("email: " + email);
+    String email = emailValidationReqDto.getEmail();
+    String code = emailValidationReqDto.getCode();
+    boolean isValidateCode = emailService.isValidateCode(email, code);
+    System.out.println("isValidateCode = " + isValidateCode);
     return ResponseEntity
       .status(HttpStatus.valueOf(200))
       .body(null);

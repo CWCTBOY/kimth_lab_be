@@ -92,5 +92,18 @@ public class EmailService {
       throw new IllegalArgumentException();
     }
   }
+
+  public boolean isValidateCode(String email, String code) {
+    String serverCode = redisUtil.getData(email);
+    System.out.println(serverCode);
+    if (serverCode == null) {
+      return false;
+    }
+    if (serverCode.equals(code)) {
+      redisUtil.deleteData(email);
+      return true;
+    }
+    return false;
+  }
 }
 
