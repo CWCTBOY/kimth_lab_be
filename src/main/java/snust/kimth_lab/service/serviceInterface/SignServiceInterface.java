@@ -11,5 +11,7 @@ public interface SignServiceInterface {
 
   Optional<Crew> validateCrew(SignInReqDto signInReqDto);
 
-  Optional<Crew> isEmailDuplicated(String email);
+  boolean isCompanyPresent(Long companyId);
+
+  boolean isEmailDuplicated(String email);
 }

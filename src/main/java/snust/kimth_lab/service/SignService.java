@@ -23,20 +23,23 @@ import java.util.Optional;
 @Service
 @Transactional
 public class SignService implements SignServiceInterface {
+  private final String alg;
+  private final String aesIv;
+  private final String aesKey;
   private final CrewRepositoryInterface crewRepository;
   private final CompanyRepositoryInterface companyRepository;
-  @Value("${crypto.algorithm}")
-  String alg;
-  @Value("${crypto.aes-iv}")
-  String aesIv;
-  @Value("${crypto.aes-key}")
-  String aesKey;
 
   @Autowired
   public SignService(
+    @Value("${crypto.algorithm}") String alg,
+    @Value("${crypto.aes-iv}") String aesIv,
+    @Value("${crypto.aes-key}") String aesKey,
     CrewRepositoryInterface crewRepository,
     CompanyRepositoryInterface companyRepository
   ) {
+    this.alg = alg;
+    this.aesIv = aesIv;
+    this.aesKey = aesKey;
     this.crewRepository = crewRepository;
     this.companyRepository = companyRepository;
   }
@@ -45,20 +48,24 @@ public class SignService implements SignServiceInterface {
   public Long join(SignUpReqDto signupReqDto) {
     Long companyId = signupReqDto.getCompanyId();
     Optional<Company> company = companyRepository.findById(companyId);
+    String email = signupReqDto.getEmail();
+    Role role = signupReqDto.getClassification().equals("관리자") ? Role.COMPANY_ADMIN : Role.USER;
+    System.out.println("role = " + role);
     if (company.isEmpty()) {
+      return null; // 발생할 일 없음
+    }
+    if (role == Role.COMPANY_ADMIN && isAdminPresent(companyId)) {
       return null;
     }
-    if (!isPossibleToJoin(signupReqDto)) {
-      return null;
-    }
+    System.out.println("encryptPassword(signupReqDto) = " + encryptPassword(signupReqDto));
     Crew crew = Crew.builder()
       .company(company.get())
-      .email(signupReqDto.getEmail())
+      .email(email)
       .password(encryptPassword(signupReqDto))
       .name(signupReqDto.getName())
       .number(signupReqDto.getNumber())
       .classification(signupReqDto.getClassification())
-      .role(signupReqDto.getClassification().equals("관리자") ? Role.COMPANY_ADMIN : Role.USER)
+      .role(role)
       .build();
     return crewRepository.save(crew).getId();
   }
@@ -80,27 +87,18 @@ public class SignService implements SignServiceInterface {
   }
 
   @Override
-  public Optional<Crew> isEmailDuplicated(String email) {
-    return crewRepository.findByEmail(email);
+  public boolean isCompanyPresent(Long companyId) {
+    Optional<Company> company = companyRepository.findById(companyId);
+    return company.isPresent();
   }
 
-  private Optional<Company> getCompany(SignUpReqDto signUpReqDto) {
-    Long companyId = signUpReqDto.getCompanyId();
-    return companyRepository.findById(companyId);
+  @Override
+  public boolean isEmailDuplicated(String email) {
+    Optional<Crew> crew = crewRepository.findByEmail(email);
+    return crew.isPresent();
   }
 
-  private boolean isPossibleToJoin(SignUpReqDto signUpReqDto) {
-    String classification = signUpReqDto.getClassification();
-    boolean isAdminPresent = isAdminPresent(signUpReqDto);
-    if (classification.equals("관리자")) {
-      return !isAdminPresent;
-    } else {
-      return isAdminPresent;
-    }
-  }
-
-  private boolean isAdminPresent(SignUpReqDto signUpReqDto) {
-    Long companyId = signUpReqDto.getCompanyId();
+  private boolean isAdminPresent(Long companyId) {
     Optional<Company> company = companyRepository.findById(companyId);
     if (company.isPresent()) {
       List<Crew> companyCrewList = company.get().getCompanyCrews();
@@ -109,7 +107,7 @@ public class SignService implements SignServiceInterface {
       ).findAny();
       return companyAdmin.isPresent();
     }
-    return false;
+    return true;
   }
 
   private String encryptPassword(SignUpReqDto signUpReqDto) {

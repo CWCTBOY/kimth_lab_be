@@ -50,13 +50,33 @@ public class SignController {
 
   @PostMapping("/sign-up") // 회원가입
   public ResponseEntity<SignResDto> join(@RequestBody SignUpReqDto signupReqDto) {
-    Long crewId = signService.join(signupReqDto);
-    if (crewId == null) {
+    if (!signService.isCompanyPresent(signupReqDto.getCompanyId())) {
+      return ResponseEntity
+        .status(HttpStatus.valueOf(404))
+        .body(
+          SignResDto.builder()
+            .memberId(null)
+            .message("company not found.")
+            .build()
+        );
+    }
+    if (signService.isEmailDuplicated(signupReqDto.getEmail())) {
+      return ResponseEntity
+        .status(HttpStatus.valueOf(401))
+        .body(
+          SignResDto.builder()
+            .memberId(null)
+            .message("email already exist.")
+            .build()
+        );
+    }
+    Long newCrewId = signService.join(signupReqDto);
+    if (newCrewId != null) {
       return ResponseEntity
         .status(HttpStatus.valueOf(201))
         .body(
           SignResDto.builder()
-            .memberId(signService.join(signupReqDto))
+            .memberId(newCrewId)
             .message("new member created.")
             .build()
         );
@@ -65,7 +85,7 @@ public class SignController {
       .status(HttpStatus.valueOf(403))
       .body(
         SignResDto.builder()
-          .message("failed to join")
+          .message("admin already exist.")
           .build()
       );
   }
@@ -89,7 +109,10 @@ public class SignController {
     if (!crew.get().isAuthorized()) { // 회원가입 승인받지 않은 회원 필터링
       return ResponseEntity
         .status(HttpStatus.valueOf(403))
-        .body(null);
+        .body(SignResDto.builder()
+          .memberId(crew.get().getId())
+          .message("unauthorized crew.")
+          .build());
     }
     ResponseCookie responseCookie = sessionService.createCookie(crew.get(), request);
     return ResponseEntity
@@ -151,8 +174,7 @@ public class SignController {
   public ResponseEntity<TextResDto> validateEmail(
     @RequestBody EmailValidationReqDto emailValidationReqDto) {
     String email = emailValidationReqDto.getEmail();
-    Optional<Crew> member = signService.isEmailDuplicated(email);
-    if (member.isPresent()) {
+    if (signService.isEmailDuplicated(email)) {
       return ResponseEntity
         .status(HttpStatus.valueOf(401))
         .body(TextResDto.builder()
